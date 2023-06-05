@@ -4,17 +4,29 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.Year;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.time.temporal.TemporalAccessor;
+import java.util.*;
+import java.util.stream.Stream;
+
+import static java.time.temporal.ChronoField.NANO_OF_SECOND;
 
 
 @SpringBootTest
 class DemoApplicationTests {
+
+    public static final DateTimeFormatter f6 = DateTimeFormatter.ofPattern("MMM-yyyy").withLocale(Locale.US);
+    public static final DateTimeFormatter f5 = DateTimeFormatter.ofPattern("yyyyMM").withLocale(Locale.US);
+    public static final DateTimeFormatter f7 = DateTimeFormatter.ofPattern("yyyyMMDD").withLocale(Locale.US);
+    public static final DateTimeFormatter f13 = DateTimeFormatter.ofPattern("dd-MMM-yyyy").withLocale(Locale.US);
+
+
+
 
     @Test
     void contextLoads() {
@@ -78,22 +90,49 @@ class DemoApplicationTests {
         Period period = Period.between(localDate, localDate2);
         Period period2 = Period.between(localDate3, localDate4);
 
+        String format = localDate2.format(f6);
 
         LocalDate localDate1 = localDate.plusMonths(6);
         long until = localDate3.until(localDate2, ChronoUnit.MONTHS);
         int dayOfMonth = localDate3.getDayOfMonth();
         //if(localDate.getDayOfMonth())
         long until1 = localDate3.until(localDate4, ChronoUnit.MONTHS);
-        System.out.println(before);
+        System.out.println(format);
         System.out.println(period);
         System.out.println(period2);
         System.out.println(until1);
     }
 
     @Test
-    public void che() {
+    public void time() {
+        TemporalAccessor parse = f6.parse("Apr-2023");
+        //int i = parse.get(fi);
+        //int i = parse.get(NANO_OF_SECOND);
+        //String format = f5.format(parse);
+        String substring = "01-Apr-2023";
+        TemporalAccessor s = f13.parse("01-"+"Apr-2023".substring(0, 8));
+
+        String format = f5.format(s);
+        String format7 = f7.format(s);
+
+        System.err.println(parse.toString());
+        System.err.println(substring);
+        System.err.println("s :" + s);
+        System.err.println("s1 :" + format);
+        System.err.println("s1 :" + format7);
+        //System.err.println(format);
 
     }
+    @Test
+    public void che() {
+
+        Stream.of("one", "two", "three", "four").filter(e -> e.length() > 3).peek(e -> System.err.println("Filtered value: " + e));
+
+    }
+
+
+
+
 
 
 
